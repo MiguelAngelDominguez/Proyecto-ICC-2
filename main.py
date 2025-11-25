@@ -54,7 +54,7 @@ def first_approach_pass(array, list_number_aprox: list) -> None:
             list_number_aprox.append(i)
 
 def second_approach_pass() -> None:
-    for i in range(len(datos_number_dataset["imges"]))
+    # for i in range(len(datos_number_dataset["imges"]))
     pass
 
 def detection_numbers(img: str) -> list:
