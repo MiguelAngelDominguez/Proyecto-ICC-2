@@ -41,52 +41,32 @@ def process_input_image(img: str) -> list[list]:
         while j < 8:
             scale8_img[i][j] = (255 - scale8_img[i][j]) * STEP_ESC
             if scale8_img[i][j] <= 5 :
-                scale8_img
+                scale8_img[i][j] = 0
             j += 1
         i += 1
     return scale8_img
 
-def first_approach_pass(array, list_number_aprox: list) -> None:
+def approach_pass(array, list_number_aprox: list) -> None:
     for i in range(len(datos_number_dataset["images"])):
         d = normalized_distance(array, datos_number_dataset["images"][i])
-        if d >= 0.05 and d < 0.15:
+        if d < 0.30:
             print(d)
-            list_number_aprox.append(i)
+            list_number_aprox.append((round(d, 8), i))
 
-def second_approach_pass() -> None:
-    # for i in range(len(datos_number_dataset["imges"]))
-    pass
-
-def detection_numbers(img: str) -> list:
-    list_number_aprox = []
+def detection_numbers(img: str, list_number_aprox: list) -> list:
     array = process_input_image(img)
-
+    approach_pass(array, list_number_aprox)
+    list_number_aprox.sort()
+    return list_number_aprox
 
 def performance_test(img: str) -> int:
     list_number_aprox = []
-    array = process_input_image(img)
-    # array = datos_number_dataset["images"][0]
-
-    print("Imagen de test:")
-    print(array)
-
-    # Primera pasada | MUY PARECIDOS
-    for i in range(len(datos_number_dataset["images"])):
-        d = normalized_distance(array, datos_number_dataset["images"][i])
-        if d >= 0.05 and d < 0.15:
-            print(d)
-            list_number_aprox.append(i)
-    # Segunda pasada | PARECIDOS
-    for i in range(len(datos_number_dataset["images"])):
-        d = normalized_distance(array, datos_number_dataset["images"][i])
-        if d >= 0.15 and d < 0.30:
-            print(d)
-            list_number_aprox.append(i)
+    list_number_aprox = detection_numbers(img, list_number_aprox)
 
     print(list_number_aprox)
     for i in range(3):
-        print(datos_number_dataset["images"][list_number_aprox[i]])
-        print("El numero se aproxima a ->", datos_number_dataset["target"][list_number_aprox[i]])
+        print(datos_number_dataset["images"][list_number_aprox[i][1]])
+        print("El numero se aproxima a ->", datos_number_dataset["target"][list_number_aprox[i][1]])
         print("___________________________")
 
 url_img = "./test/img/nueve_test.png"
